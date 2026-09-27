@@ -26,3 +26,6 @@ __pycache__/
 *.pyc
 
 .claude/settings.json
+
+# Local GKD snapshots (may contain private information)
+/snapshot/

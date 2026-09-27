@@ -7,7 +7,7 @@ export default defineGkdApp({
     {
       key: 0,
       name: '分段广告-朋友圈广告',
-      desc: '警告⚠️：该规则有可能会误触，请谨慎开启',
+      desc: '警告⚠️：该规则有可能会误触，请谨慎开启。广告→关闭该广告→直接关闭',
       activityIds: [
         '.plugin.sns.ui.SnsTimeLineUI',
         '.plugin.sns.ui.improve.ImproveSnsTimelineUI',
@@ -60,11 +60,29 @@ export default defineGkdApp({
             'https://i.gkd.li/i/19633571',
           ],
         },
+        {
+          key: 3,
+          name: '①坐标点击[广告入口]',
+          activityIds: '.plugin.sns.ui.improve.ImproveSnsTimelineUI',
+          action: 'clickCenter',
+          actionDelay: 300,
+          position: {
+            left: 'width * 0.9223',
+            top: 'height * 0.5',
+          },
+          matches:
+            'RecyclerView[index=parent.childCount.minus(1)] >5 LinearLayout[getChild(0).desc$="的头像"] > LinearLayout > @LinearLayout[childCount=2][getChild(0).getChild(0).text!=null][visibleToUser=true] > LinearLayout[childCount=0][visibleToUser=false]',
+          snapshotUrls: 'https://i.gkd.li/i/32693459',
+          excludeSnapshotUrls: [
+            'https://i.gkd.li/i/19717709',
+            'https://i.gkd.li/i/27969204', // 限定列表为最后一个子节点，避免点击被评论输入框遮挡的广告
+          ],
+        },
 
         // 预留key
         // 第二段
         {
-          preKeys: [0, 1, 2],
+          preKeys: [0, 1, 2, 3],
           key: 25,
           name: '②点击[关闭]',
           fastQuery: true,
@@ -87,6 +105,7 @@ export default defineGkdApp({
             //3
             'https://i.gkd.li/i/14647839',
             'https://i.gkd.li/i/19666176',
+            'https://i.gkd.li/i/32693463',
             //4
             'https://i.gkd.li/i/19633486',
           ],
@@ -105,6 +124,7 @@ export default defineGkdApp({
             'https://i.gkd.li/i/12905846',
             'https://i.gkd.li/i/14647940',
             'https://i.gkd.li/i/14783534',
+            'https://i.gkd.li/i/32693462',
           ],
           excludeSnapshotUrls: 'https://i.gkd.li/i/28927197', // [text="关闭该广告"] , 这是第二段的,用[text*="关闭"]会点击错, https://github.com/Lin-arm/GKD_subscription/issues/194
         },
@@ -124,7 +144,7 @@ export default defineGkdApp({
         // 第五段: 误触后的操作
         {
           key: 100,
-          preKeys: [1], // 子key1 用坐标点击容易误触
+          preKeys: [1, 3], // 子key1、key3 用坐标点击容易误触
           name: '⑤误触后-按[返回键]', // 进入其它界面时按下[返回键]
           action: 'back',
           fastQuery: true,
@@ -141,7 +161,7 @@ export default defineGkdApp({
         },
         {
           key: 101,
-          preKeys: [1],
+          preKeys: [1, 3],
           name: '⑤误触右上角-点击[取消]',
           fastQuery: true,
           matches: '@LinearLayout[clickable=true] > [text="取消"]',
